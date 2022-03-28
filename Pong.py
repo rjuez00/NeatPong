@@ -52,8 +52,8 @@ class Pong():
       self.paddle_position = int(self.limits[1]/2)
       self.ball_position = [int(self.limits[0]/2), int(self.limits[1]/2)]
 
-      #self.ball_direction = [random.choice([-1,2]) * self.vel_ball[0],   random.choice([-1,2]) * self.vel_ball[1]]
-      self.ball_direction = [-1, 0]
+      self.ball_direction = [random.choice([-1,2]) * self.vel_ball[0],   random.choice([-1,2]) * self.vel_ball[1]]
+      #self.ball_direction = [-1, 0]
     
     def paddle_down(self):
         if self.paddle_position == self.limits[1]:
@@ -147,7 +147,9 @@ class Pong():
 
 
 if __name__ == "__main__":
-    #TODO las colisiones con las paredes no estan bien echas
+    #TODO las colisiones con las paredes no estan bien hechas
+    #TODO evitar que la pelota salga solo vertical o solo horizontal
+    #TODO a veces la partida termina aunque haya una colision con paleta
     pong = Pong(sizex = 40, sizey = 40, vel_paddle = 1, vel_ball_x = 1, vel_ball_y = 1, size_paddle = 4)
 
     while True:
