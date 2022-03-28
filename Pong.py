@@ -51,8 +51,9 @@ class Pong():
     def init_game(self):
       self.paddle_position = int(self.limits[1]/2)
       self.ball_position = [int(self.limits[0]/2), int(self.limits[1]/2)]
-      self.ball_direction = [random.randint(-1,2) * self.vel_ball[0],   random.randint(-1,2) * self.vel_ball[1]]
-    
+
+      #self.ball_direction = [random.choice([-1,2]) * self.vel_ball[0],   random.choice([-1,2]) * self.vel_ball[1]]
+      self.ball_direction = [-1, 0]
     
     def paddle_down(self):
         if self.paddle_position == self.limits[1]:
@@ -76,7 +77,10 @@ class Pong():
 
     def paddle_colision(self):
         #check if the ball has collisioned with the paddle
-        pass
+        if self.ball_position[0] == 0 and self.ball_position[1] >= self.paddle_position-self.size_paddle/2 and self.ball_position[1] <= self.paddle_position+self.size_paddle/2:
+          self.ball_direction[0] *= -1
+            
+        
     
     def check_borders(self):
         #check if the ball has colissioned with the borders or lost
@@ -144,7 +148,6 @@ class Pong():
 
 if __name__ == "__main__":
     #TODO las colisiones con las paredes no estan bien echas
-    #TODO falta colisiones con paleta
     pong = Pong(sizex = 40, sizey = 40, vel_paddle = 1, vel_ball_x = 1, vel_ball_y = 1, size_paddle = 4)
 
     while True:
@@ -154,9 +157,7 @@ if __name__ == "__main__":
         pong.paddle_down()
       elif direction in ["w", "W", "8"]:
         pong.paddle_up()
-      elif direction != "":
-        print("WRONG INPUT")
-        exit(1)
+      
       
       if pong.simulate_ball_position():
           exit()
