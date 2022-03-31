@@ -39,22 +39,32 @@ from os import system, name
 class Pong():
     #tamaños pares en y
     #la paleta tiene que tener un tamaño impar o se suma +1
-    def __init__(self, sizex:int, sizey:int, vel_paddle:int, vel_ball_x:int, vel_ball_y:int, size_paddle: int):
+    def __init__(self, sizex:int, sizey:int, vel_paddle:int, vel_ball_x:int, vel_ball_y:int, size_paddle: int, save_last_movements: int):
         self.size_paddle = size_paddle if size_paddle % 2 != 0 else size_paddle +1 
         self.limits = [sizex-1,sizey-1]
         self.vel_paddle = vel_paddle
         self.vel_ball = [vel_ball_x, vel_ball_y]
-
+        self.save_last_movements = save_last_movements
         self.init_game()
         
       
     def init_game(self):
       self.paddle_position = int(self.limits[1]/2)
       self.ball_position = [int(self.limits[0]/2), int(self.limits[1]/2)]
+      self.ball_direction = [random.choice([-1,1]) * self.vel_ball[0],   random.choice([-1,1]) * self.vel_ball[1]]
+      self.last_positions = [int(self.limits[0]/2), int(self.limits[1]/2)] * self.save_last_movements
+      self.frames_lasted = 0
 
-      self.ball_direction = [random.choice([-1,2]) * self.vel_ball[0],   random.choice([-1,2]) * self.vel_ball[1]]
-      #self.ball_direction = [-1, 0]
-    
+
+    def represent_base(self):
+      return self.ball_position + [self.paddle_position]
+
+    def represent_direction(self):
+      return self.ball_position + [self.paddle_position] + self.ball_direction
+
+    def represent_last_positions(self):
+      return self.ball_position + [self.paddle_position] + self.last_positions
+
     def paddle_down(self):
         if self.paddle_position == self.limits[1]:
           return
@@ -68,11 +78,15 @@ class Pong():
         self.paddle_position -= self.vel_paddle
 
     def simulate_ball_position(self):
+        self.frames_lasted += 1
         self.update_ball_position()
         self.paddle_colision()
         return self.check_borders()
 
     def update_ball_position(self):
+        self.last_positions.pop()
+        self.last_positions.pop()
+        self.last_positions[0:0] = self.ball_position
         self.ball_position = [pos+direction for pos, direction in zip(self.ball_position, self.ball_direction)]
 
     def paddle_colision(self):
@@ -91,7 +105,7 @@ class Pong():
           self.ball_direction[0] *= -1
         
         if (self.ball_position[0] < 0):
-            return True
+            return False
 
         if(self.ball_position[1] >= self.limits[1]):
           self.ball_position[1] = self.limits[1] - ((self.ball_position[1] + self.vel_ball[1]) % self.limits[1])
@@ -101,7 +115,7 @@ class Pong():
           self.ball_position[1] = 0 - ((self.ball_position[1] + self.vel_ball[1]))
           self.ball_direction[1] *= -1
 
-        return False
+        return True
 
 
     def clear():
@@ -115,8 +129,10 @@ class Pong():
                 f"SIZE_PADDLE: {self.size_paddle}"
               ]
       
-      print("; ".join(info), end = "")
-      print("")
+      print("; ".join(info))
+      
+      for representation in [self.represent_base, self.represent_direction, self.represent_last_positions]:
+        print(representation.__name__, ":", representation())
 
     def visual(self):
       Pong.clear()
@@ -150,9 +166,9 @@ if __name__ == "__main__":
     #TODO las colisiones con las paredes no estan bien hechas
     #TODO evitar que la pelota salga solo vertical o solo horizontal
     #TODO a veces la partida termina aunque haya una colision con paleta
-    pong = Pong(sizex = 40, sizey = 40, vel_paddle = 1, vel_ball_x = 1, vel_ball_y = 1, size_paddle = 4)
+    pong = Pong(sizex = 40, sizey = 40, vel_paddle = 1, vel_ball_x = 1, vel_ball_y = 1, size_paddle = 4, save_last_movements = 4)
 
-    while True:
+    while pong.simulate_ball_position():
       pong.visual()
       direction = input()
       if direction in ["s", "S", "2"]:
@@ -160,6 +176,3 @@ if __name__ == "__main__":
       elif direction in ["w", "W", "8"]:
         pong.paddle_up()
       
-      
-      if pong.simulate_ball_position():
-          exit()
