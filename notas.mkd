@@ -1,0 +1,7 @@
+* TODO: las colisiones con las paredes no estan bien hechas (creo)
+* TODO: a veces la partida termina aunque haya una colision con paleta (creo)
+
+probar:
+    * varios inputs
+    * actualizar fitness en cada movimiento siguiendo la pelota
+    * que la paleta aumente la velocidad hacia arriba o hacia abajo dependiendo de lo mas en el extremo que le de

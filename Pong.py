@@ -163,16 +163,16 @@ class Pong():
 
 
 if __name__ == "__main__":
-    #TODO las colisiones con las paredes no estan bien hechas
-    #TODO evitar que la pelota salga solo vertical o solo horizontal
-    #TODO a veces la partida termina aunque haya una colision con paleta
+    
     pong = Pong(sizex = 40, sizey = 40, vel_paddle = 1, vel_ball_x = 1, vel_ball_y = 1, size_paddle = 4, save_last_movements = 4)
 
-    while pong.simulate_ball_position():
-      pong.visual()
-      direction = input()
-      if direction in ["s", "S", "2"]:
-        pong.paddle_down()
-      elif direction in ["w", "W", "8"]:
-        pong.paddle_up()
-      
+    while True:
+        pong.visual()
+        direction = input()
+        if direction in ["s", "S", "2"]:
+            pong.paddle_down()
+        elif direction in ["w", "W", "8"]:
+            pong.paddle_up()
+
+        if pong.simulate_ball_position() == False:
+            pong.init_game()

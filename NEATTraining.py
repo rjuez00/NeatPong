@@ -4,41 +4,32 @@ import pickle
 
 import neat
 import numpy as np
-from snake import *
-
+from pong import *
 
 runs_per_net = 1
 max_game_steps = 2000
 
 # Use the NN network phenotype and the discrete actuator force function.
 def eval_genome(genome, config):
-
+    pong = Pong(sizex = 40, sizey = 40, vel_paddle = 1, vel_ball_x = 1, vel_ball_y = 1, size_paddle = 4, save_last_movements = 4)
     net = neat.nn.FeedForwardNetwork.create(genome, config)
 
     fitnesses = []
     for runs in range(runs_per_net):
+        pong.init_game()
         
-        s = SnakeGame(training=True)
-        observation = s.observation()
+        while pong.simulate_ball_position():
+            direction = np.argmax(net.activate(pong.represent_base()))
+            #direction = np.argmax(net.activate(pong.represent_direction()))
+            #direction = np.argmax(net.activate(pong.represent_last_positions()))
+            if direction == 0:
+                pong.paddle_down()
+            elif direction == 2:
+                pong.paddle_up()
 
-        steps = 0
-        while not s.gameOver and steps < max_game_steps:
-
-            action = np.argmax(net.activate(observation))
-            if action == 0:
-                s.move(s.snakeDir.rotLeft())
-            elif action == 1 or action == None: # Keep going in the direction the snake is going
-                s.move(s.snakeDir)
-            elif action == 2:
-                s.move(s.snakeDir.rotRight())
-            
-            observation = s.observation()
-        
-            steps += 1
-
-        fitnesses.append(s.length() - 1)
-        #fitnesses.append(s.fitness())
-
+        fitnesses.append(pong.frames_lasted)
+    
+    #return min(fitnesses)
     return np.mean(fitnesses)
 
 
