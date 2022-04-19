@@ -84,9 +84,9 @@ class Pong():
         return self.check_borders()
 
     def update_ball_position(self):
-        self.last_positions.pop()
-        self.last_positions.pop()
-        self.last_positions[0:0] = self.ball_position
+        #self.last_positions.pop()
+        #self.last_positions.pop()
+        #self.last_positions[0:0] = self.ball_position
         self.ball_position = [pos+direction for pos, direction in zip(self.ball_position, self.ball_direction)]
 
     def paddle_colision(self):

@@ -4,7 +4,7 @@ import pickle
 
 import neat
 import numpy as np
-from pong import *
+from pong import Pong
 
 runs_per_net = 1
 max_game_steps = 2000
@@ -59,7 +59,6 @@ def run():
     with open('winner', 'wb') as f:
         pickle.dump(winner, f)
 
-    print(winner)
 
 
 
