@@ -1,5 +1,5 @@
 from pong import Pong
-import pickle, numpy as np, neat
+import pickle, numpy as np, neat, sys
 
 
 def replay_genome(config_path = "config", genome_path="winner"):
@@ -20,7 +20,7 @@ def replay_genome(config_path = "config", genome_path="winner"):
 
 
 
-net = replay_genome()
+net = replay_genome(genome_path = sys.argv[1])
 
 pong = Pong(sizex = 40, sizey = 40, vel_paddle = 1, vel_ball_x = 1, vel_ball_y = 1, size_paddle = 4, save_last_movements = 4)
 
