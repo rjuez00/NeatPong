@@ -2,17 +2,18 @@ import multiprocessing, os, pickle, neat, numpy as np, sys
 from pong import Pong
 
 runs_per_net = 1
-max_game_steps = 2000
+max_game_steps = 50000
 
 # Use the NN network phenotype and the discrete actuator force function.
 def eval_genome(genome, config):
-    pong = Pong(sizex = 40, sizey = 40, vel_paddle = 1, vel_ball_x = 1, vel_ball_y = 1, size_paddle = 4, save_last_movements = 4)
+    pong = Pong(sizex = 40, sizey = 40, vel_paddle = 1, save_last_movements = 4)
     net = neat.nn.FeedForwardNetwork.create(genome, config)
 
     fitnesses = []
     for runs in range(runs_per_net):
         pong.init_game()
         
+        i = 0
         while pong.simulate_ball_position():
             if sys.argv[1] == "base":
                 #inputs = 3
@@ -29,6 +30,10 @@ def eval_genome(genome, config):
                 pong.paddle_down()
             elif direction == 2:
                 pong.paddle_up()
+            
+            i += 1
+            if i > max_game_steps:
+                break
 
         fitnesses.append(pong.frames_lasted)
     
