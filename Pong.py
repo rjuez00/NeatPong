@@ -39,11 +39,11 @@ from os import system, name
 class Pong():
     #tamaños pares en y
     #la paleta tiene que tener un tamaño impar o se suma +1
-    def __init__(self, sizex:int, sizey:int, vel_paddle:int, vel_ball_x:int, vel_ball_y:int, size_paddle: int, save_last_movements: int):
-        self.size_paddle = size_paddle if size_paddle % 2 != 0 else size_paddle +1 
+    def __init__(self, sizex:int, sizey:int, vel_paddle:int, save_last_movements: int):
+        self.size_paddle = 4
         self.limits = [sizex-1,sizey-1]
         self.vel_paddle = vel_paddle
-        self.vel_ball = [vel_ball_x, vel_ball_y]
+        self.vel_ball = [1, 1]
         self.save_last_movements = save_last_movements
         self.init_game()
         
@@ -51,6 +51,7 @@ class Pong():
     def init_game(self):
       self.paddle_position = int(self.limits[1]/2)
       self.ball_position = [int(self.limits[0]/2), int(self.limits[1]/2)]
+      self.ball_position = [2,2]
       self.ball_direction = [random.choice([-1,1]) * self.vel_ball[0],   random.choice([-1,1]) * self.vel_ball[1]]
       self.last_positions = [int(self.limits[0]/2), int(self.limits[1]/2)] * self.save_last_movements
       self.frames_lasted = 0
@@ -91,9 +92,13 @@ class Pong():
 
     def paddle_colision(self):
         #check if the ball has collisioned with the paddle
-        if self.ball_position[0] == 0 and self.ball_position[1] >= self.paddle_position-self.size_paddle/2 and self.ball_position[1] <= self.paddle_position+self.size_paddle/2:
+        if self.ball_position[0] == 0 and self.ball_position[1] > self.paddle_position-self.size_paddle/2 and self.ball_position[1] < self.paddle_position+self.size_paddle/2:
           self.ball_direction[0] *= -1
-            
+          self.ball_direction[1] = 1 if self.ball_direction[1] > 0 else -1
+        
+        if self.ball_position[0] == 0 and (self.ball_position[1] == self.paddle_position-self.size_paddle/2 or self.ball_position[1] == self.paddle_position+self.size_paddle/2):
+          self.ball_direction[0] *= -1
+          self.ball_direction[1] = 2 if self.ball_direction[1] > 0 else -2
         
     
     def check_borders(self):
@@ -164,7 +169,7 @@ class Pong():
 
 if __name__ == "__main__":
     
-    pong = Pong(sizex = 40, sizey = 40, vel_paddle = 1, vel_ball_x = 1, vel_ball_y = 1, size_paddle = 4, save_last_movements = 4)
+    pong = Pong(sizex = 40, sizey = 40, vel_paddle = 1, save_last_movements = 4)
 
     while True:
         pong.visual()
