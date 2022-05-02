@@ -1,0 +1,1 @@
+python simulate_winner.py winner config_base 60

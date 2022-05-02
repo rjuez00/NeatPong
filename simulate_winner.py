@@ -1,8 +1,8 @@
 from pong import Pong
-import pickle, numpy as np, neat, sys
+import pickle, numpy as np, neat, sys, time
 
 
-def replay_genome(config_path = "config", genome_path="winner"):
+def replay_genome(config_path = sys.argv[2], genome_path="winner"):
     # Load requried NEAT config
     config = neat.config.Config(neat.DefaultGenome, neat.DefaultReproduction, neat.DefaultSpeciesSet, neat.DefaultStagnation, config_path)
 
@@ -22,17 +22,18 @@ def replay_genome(config_path = "config", genome_path="winner"):
 
 net = replay_genome(genome_path = sys.argv[1])
 
-pong = Pong(sizex = 40, sizey = 40, vel_paddle = 1, vel_ball_x = 1, vel_ball_y = 1, size_paddle = 4, save_last_movements = 4)
+pong = Pong(sizex = 40, sizey = 40, vel_paddle = 1, save_last_movements = 4)
 
 fitnesses = []
 pong.init_game()
-
+fps = int(sys.argv[3])
 while pong.simulate_ball_position():
+    time.sleep(1/fps)
     pong.visual()
-    input()
-    direction = np.argmax(net.activate(pong.represent_base()))
+    #input()
+    #direction = np.argmax(net.activate(pong.represent_base()))
     #direction = np.argmax(net.activate(pong.represent_direction()))
-    #direction = np.argmax(net.activate(pong.represent_last_positions()))
+    direction = np.argmax(net.activate(pong.represent_last_positions()))
     if direction == 0:
         pong.paddle_down()
     elif direction == 2:

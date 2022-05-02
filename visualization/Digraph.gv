@@ -1,0 +1,17 @@
+digraph {
+	node [fontsize=9 height=0.2 shape=circle width=0.2]
+	"Ball X" [fillcolor=lightgray shape=box style=filled]
+	"Ball Y" [fillcolor=lightgray shape=box style=filled]
+	"Paddle Y" [fillcolor=lightgray shape=box style=filled]
+	"Paddle Down" [fillcolor=lightblue style=filled]
+	"Do not move" [fillcolor=lightblue style=filled]
+	"Paddle Up" [fillcolor=lightblue style=filled]
+	212 [fillcolor=white style=filled]
+	"Ball Y" -> 212 [color=green penwidth=0.2366475848696552 style=dotted]
+	212 -> "Do not move" [color=red penwidth=0.3892572924051013 style=solid]
+	"Ball Y" -> "Paddle Down" [color=green penwidth=0.5910182079218259 style=solid]
+	"Paddle Y" -> "Paddle Down" [color=red penwidth=0.5698848865201851 style=solid]
+	"Ball Y" -> "Paddle Up" [color=red penwidth=0.5129999839324015 style=solid]
+	"Paddle Y" -> 212 [color=red penwidth=0.6642552403364678 style=solid]
+	"Paddle Y" -> "Paddle Up" [color=green penwidth=0.5475710269026111 style=solid]
+}
