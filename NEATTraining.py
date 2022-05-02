@@ -59,7 +59,7 @@ def run():
     pop.add_reporter(neat.StdOutReporter(True))
 
     pe = neat.ParallelEvaluator(multiprocessing.cpu_count(), eval_genome)
-    winner = pop.run(pe.evaluate, 300)
+    winner = pop.run(pe.evaluate, 100)
 
     # Save the winner.
     with open(f'winner_last_positions_larger', 'wb') as f:

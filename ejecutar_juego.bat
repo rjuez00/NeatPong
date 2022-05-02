@@ -1,1 +1,1 @@
-python simulate_winner.py winner config_base 60
+python simulate_winner.py winner_last_positions_larger config_last_positions 10
