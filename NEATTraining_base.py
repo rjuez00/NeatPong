@@ -1,7 +1,7 @@
 import multiprocessing, os, pickle, neat, numpy as np, sys
 from pong import Pong
 
-runs_per_net = 5
+runs_per_net = 4
 max_game_steps = 50000
 
 # Use the NN network phenotype and the discrete actuator force function.
@@ -10,13 +10,12 @@ def eval_genome(genome, config):
     net = neat.nn.FeedForwardNetwork.create(genome, config)
 
     fitnesses = []
-    for runs in range(runs_per_net):
-        pong.init_game()
+    for init_vector in [[1,1],[1,-1],[-1,1],[-1,-1]]:
+        pong.init_game(*init_vector)
         
         i = 0
         while pong.simulate_ball_position():
-            #direction = np.argmax(net.activate(pong.represent_base()))
-            direction = np.argmax(net.activate(pong.represent_last_positions()))
+            direction = np.argmax(net.activate(pong.represent_base()))
 
             
             
@@ -47,7 +46,7 @@ def run():
     local_dir = os.path.dirname(__file__)
     
 
-    config_path = os.path.join(local_dir, 'config_last_positions')
+    config_path = os.path.join(local_dir, 'config_base')
 
     config = neat.Config(neat.DefaultGenome, neat.DefaultReproduction,
                          neat.DefaultSpeciesSet, neat.DefaultStagnation,
@@ -62,7 +61,7 @@ def run():
     winner = pop.run(pe.evaluate, 100)
 
     # Save the winner.
-    with open(f'winner_last_positions_larger', 'wb') as f:
+    with open(f'winner_four_directions_test_base', 'wb') as f:
         pickle.dump(winner, f)
 
 

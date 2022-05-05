@@ -48,10 +48,10 @@ class Pong():
         self.init_game()
         
       
-    def init_game(self):
+    def init_game(self, x_dir = random.choice([-1,1]), y_dir = random.choice([-1,1])):
       self.paddle_position = int(self.limits[1]/2)
       self.ball_position = [int(self.limits[0]/2), int(self.limits[1]/2)]
-      self.ball_direction = [random.choice([-1,1]) * self.vel_ball[0],   random.choice([-1,1]) * self.vel_ball[1]]
+      self.ball_direction = [x_dir * self.vel_ball[0],  y_dir * self.vel_ball[1]]
       self.last_positions = [int(self.limits[0]/2), int(self.limits[1]/2)] * self.save_last_movements
       self.frames_lasted = 0
 

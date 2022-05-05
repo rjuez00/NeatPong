@@ -2,7 +2,7 @@ from pong import Pong
 import pickle, numpy as np, neat, sys, time
 
 
-def replay_genome(config_path = sys.argv[2], genome_path="winner"):
+def replay_genome(config_path = "config_last_positions", genome_path="winner"):
     # Load requried NEAT config
     config = neat.config.Config(neat.DefaultGenome, neat.DefaultReproduction, neat.DefaultSpeciesSet, neat.DefaultStagnation, config_path)
 
@@ -26,7 +26,7 @@ pong = Pong(sizex = 40, sizey = 40, vel_paddle = 1, save_last_movements = 4)
 
 fitnesses = []
 pong.init_game()
-fps = int(sys.argv[3])
+fps = int(sys.argv[2])
 while pong.simulate_ball_position():
     time.sleep(1/fps)
     pong.visual()
