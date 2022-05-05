@@ -1,7 +1,7 @@
 from visualize import draw_net
 import neat, pickle, sys
 
-config_path = sys.argv[2]
+config_path = "../config_base"
 winner_path = sys.argv[1]
 
 config = neat.Config(neat.DefaultGenome, neat.DefaultReproduction,
